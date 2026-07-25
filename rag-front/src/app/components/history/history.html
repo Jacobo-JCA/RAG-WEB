@@ -1,0 +1,25 @@
+<div class="history-container">
+  <h2>Documentos subidos</h2>
+
+  @if (cargando) {
+    <p class="estado">Cargando documentos...</p>
+  }
+
+  @if (!cargando && documentos.length === 0) {
+    <p class="estado">No hay documentos subidos aún.</p>
+  }
+
+  @for (doc of documentos; track doc.id) {
+    <div class="documento-card">
+      <div class="doc-info">
+        <span class="doc-nombre">📄 {{ doc.nombre }}</span>
+        <span class="doc-meta">
+          {{ doc.fechaSubida }} · {{ (doc.tamanio / 1024).toFixed(1) }} KB
+        </span>
+      </div>
+      <button class="btn-eliminar" (click)="eliminar(doc.id)">
+        Eliminar
+      </button>
+    </div>
+  }
+</div>

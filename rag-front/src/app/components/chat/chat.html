@@ -1,0 +1,28 @@
+<div class="chat-container">
+  <h2>Consultar documentos</h2>
+
+  <div class="mensajes" #contenedorMensajes>
+    @for (mensaje of mensajes; track mensaje.id) {
+      <div class="mensaje" [class.usuario]="mensaje.rol === 'usuario'" [class.bot]="mensaje.rol === 'bot'">
+        <span class="rol">{{ mensaje.rol === 'usuario' ? 'Tú' : 'RAG' }}</span>
+        <p>{{ mensaje.texto }}</p>
+      </div>
+    }
+  </div>
+
+  <div class="input-area">
+    <textarea
+      [(ngModel)]="pregunta"
+      placeholder="Escribe tu pregunta..."
+      rows="3"
+      (keydown.control.enter)="enviarPregunta()"
+    ></textarea>
+    <button
+      class="btn-enviar"
+      [disabled]="!pregunta.trim() || cargando"
+      (click)="enviarPregunta()"
+    >
+      {{ cargando ? 'Consultando...' : 'Enviar' }}
+    </button>
+  </div>
+</div>

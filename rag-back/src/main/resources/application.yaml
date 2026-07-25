@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ragdb
+    username: raguser
+    password: ragpass
+    driver-class-name: org.postgresql.Driver
+
+  # JPA/Hibernate - crea las tablas automáticamente al iniciar
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  # Subida de archivos
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+# Configuración Ollama
+ollama:
+  base-url: http://localhost:11434
+  embedding-model: nomic-embed-text
+  chat-model: tinyllama
+
+# Configuración RAG
+rag:
+  chunk-size: 500
+  chunk-overlap: 50
+  top-k-results: 3
+
+# CORS para Angular
+app:
+  cors:
+    allowed-origins: http://localhost:4200

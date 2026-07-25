@@ -1,0 +1,36 @@
+<div class="upload-container">
+  <h2>Subir documento</h2>
+
+  <div class="drop-zone" (click)="abrirSelector()">
+    <span class="icon">📄</span>
+    <p>Haz clic para seleccionar un PDF</p>
+    <span class="hint">Solo archivos .pdf</span>
+  </div>
+
+  <input
+    type="file"
+    accept=".pdf"
+    #inputArchivo
+    (change)="archivoSeleccionado($event)"
+    style="display:none"
+  />
+
+  @if (archivo) {
+    <div class="archivo-info">
+      <span>📎 {{ archivo.name }}</span>
+      <span class="size">{{ (archivo.size / 1024).toFixed(1) }} KB</span>
+    </div>
+  }
+
+  @if (mensaje) {
+    <div class="mensaje">{{ mensaje }}</div>
+  }
+
+  <button
+    class="btn-subir"
+    [disabled]="!archivo || subiendo"
+    (click)="subirArchivo()"
+  >
+    {{ subiendo ? 'Subiendo...' : 'Subir PDF' }}
+  </button>
+</div>
