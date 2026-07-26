@@ -77,19 +77,19 @@ public class OllamaService {
         }
     }
 
-    public String generateResponse(String pregunta, String contexto) {
+    public String generateResponse(String question, String context) {
         try {
             String prompt = String.format("""
-            Usa ÚNICAMENTE la siguiente información para responder la pregunta.
+            Usa ÚNICAMENTE la siguiente información para responder la question.
             Si la información no es suficiente, dilo claramente.
             
-            CONTEXTO:
+            context:
             %s
             
-            PREGUNTA: %s
+            question: %s
             
             RESPUESTA:
-            """, contexto, pregunta);
+            """, context, question);
 
             ObjectNode requestBody = objectMapper.createObjectNode();
             requestBody.put("model", chatModel);
@@ -98,9 +98,7 @@ public class OllamaService {
 
             String responseJson = post("/api/generate", requestBody.toString());
             JsonNode response = objectMapper.readTree(responseJson);
-
             return response.get("response").asText();
-
         } catch (Exception e) {
             throw new RuntimeException("Error generando respuesta: " + e.getMessage(), e);
         }

@@ -32,23 +32,20 @@ public class ChatService {
     }
 
     public String answerQuestion(String ask) {
-        float[] embeddingPregunta = ollamaService.generateEmbedding(ask);
+        float[] embeddingQuestion = ollamaService.generateEmbedding(ask);
+        String embeddingStr = floatArrayToVectorString(embeddingQuestion);
+        List<ChunkDocument> relevantChunks = chunkRepo.findMostSimilar(embeddingStr, topK);
 
-        String embeddingStr = floatArrayToVectorString(embeddingPregunta);
-
-        List<ChunkDocument> chunksRelevantes = chunkRepo.findMostSimilar(embeddingStr, topK);
-
-        if (chunksRelevantes.isEmpty()) {
+        if (relevantChunks.isEmpty()) {
             return "No encontré documentos relevantes. Sube primero algunos PDFs.";
         }
 
-        String context = chunksRelevantes.stream()
+        String context = relevantChunks.stream()
                 .map(chunk -> String.format("[Fragmento %d del documento '%s']:\n%s",
                         chunk.getNumberChunk(),
                         chunk.getDocument().getName(),
                         chunk.getContent()))
                 .collect(Collectors.joining("\n\n---\n\n"));
-
         return ollamaService.generateResponse(ask, context);
     }
 }
