@@ -12,7 +12,7 @@ export class Pdf {
 
   subirPdf(archivo: File): Observable<any> {
     const formData = new FormData();
-    formData.append('archivo', archivo);
-    return this.http.post(`${this.urlBase}/documents/subir`, formData);
+    formData.append('file', archivo);
+    return this.http.post(`${this.urlBase}/documents/upload`, formData);
   }
 }

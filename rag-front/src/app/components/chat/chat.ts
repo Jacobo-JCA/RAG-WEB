@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../services/chat-service/chatservice';
 
@@ -13,45 +13,45 @@ interface Message {
   standalone: true,
   imports: [FormsModule],
   templateUrl: './chat.html',
-  styleUrl: './chat.css'
+  styleUrl: './chat.css',
 })
 export class Chat {
-  pregunta = '';
+  question = '';
   cargando = false;
-  mensajes: Message[] = [];
+  mensajes = signal<Message[]>([]);
   private contadorId = 0;
 
   constructor(private chatService: ChatService) {}
 
   enviarPregunta(): void {
-    if (!this.pregunta.trim() || this.cargando) return;
+    if (!this.question.trim() || this.cargando) return;
 
-    const textoPregunta = this.pregunta;
-    this.pregunta = '';
+    const textoPregunta = this.question;
+    this.question = '';
 
-    this.mensajes.push({
+    this.mensajes.update(msgs => [...msgs, {
       id: ++this.contadorId,
       rol: 'usuario',
       texto: textoPregunta
-    });
+    }]);
 
     this.cargando = true;
 
     this.chatService.preguntar(textoPregunta).subscribe({
       next: (respuesta) => {
-        this.mensajes.push({
+        this.mensajes.update(msgs => [...msgs, {
           id: ++this.contadorId,
           rol: 'bot',
           texto: respuesta.respuesta
-        });
+        }]);
         this.cargando = false;
       },
       error: () => {
-        this.mensajes.push({
+        this.mensajes.update(msgs => [...msgs, {
           id: ++this.contadorId,
           rol: 'bot',
           texto: '❌ Error al consultar el documento'
-        });
+        }]);
         this.cargando = false;
       }
     });
