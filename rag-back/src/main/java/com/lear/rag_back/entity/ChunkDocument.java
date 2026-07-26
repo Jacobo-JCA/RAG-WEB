@@ -1,6 +1,7 @@
 package com.lear.rag_back.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Array;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -28,6 +29,7 @@ public class ChunkDocument {
             columnDefinition = "vector(768)"
     )
     @JdbcTypeCode(SqlTypes.VECTOR)
+    @Array(length = 3)
     private float[] embedding;
 
     public Long getIdChunk() {

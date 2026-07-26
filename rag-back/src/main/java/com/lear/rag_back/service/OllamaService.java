@@ -77,7 +77,7 @@ public class OllamaService {
         }
     }
 
-    public String generarRespuesta(String pregunta, String contexto) {
+    public String generateResponse(String pregunta, String contexto) {
         try {
             String prompt = String.format("""
             Usa ÚNICAMENTE la siguiente información para responder la pregunta.

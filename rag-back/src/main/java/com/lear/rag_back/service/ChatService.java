@@ -31,8 +31,8 @@ public class ChatService {
         return sb.toString();
     }
 
-    public String responderPregunta(String pregunta) {
-        float[] embeddingPregunta = ollamaService.generateEmbedding(pregunta);
+    public String answerQuestion(String ask) {
+        float[] embeddingPregunta = ollamaService.generateEmbedding(ask);
 
         String embeddingStr = floatArrayToVectorString(embeddingPregunta);
 
@@ -49,6 +49,6 @@ public class ChatService {
                         chunk.getContent()))
                 .collect(Collectors.joining("\n\n---\n\n"));
 
-        return ollamaService.generarRespuesta(pregunta, context);
+        return ollamaService.generateResponse(ask, context);
     }
 }
