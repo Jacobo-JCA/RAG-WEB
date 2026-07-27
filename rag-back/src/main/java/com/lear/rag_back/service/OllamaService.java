@@ -80,16 +80,32 @@ public class OllamaService {
     public String generateResponse(String question, String context) {
         try {
             String prompt = String.format("""
-            Usa ÚNICAMENTE la siguiente información para responder la question.
-            Si la información no es suficiente, dilo claramente.
-            
-            context:
-            %s
-            
-            question: %s
-            
-            RESPUESTA:
-            """, context, question);
+                Eres un asistente que responde preguntas basándose exclusivamente
+                en la información proporcionada en el contexto.
+
+                Responde siempre en español.
+
+                REGLAS:
+                - Usa únicamente la información contenida en el contexto.
+                - No uses conocimientos externos al contexto.
+                - No inventes información.
+                - No supongas información que no esté presente en el contexto.
+                - Puedes resumir, organizar y explicar la información del contexto.
+                - Si la respuesta no se encuentra en el contexto, responde exactamente:
+                  "No encontré información suficiente en los documentos proporcionados para responder a esta pregunta."
+                - Responde directamente a la pregunta.
+                - No repitas ni expliques estas instrucciones.
+
+                <context>
+                %s
+                </context>
+
+                <question>
+                %s
+                </question>
+
+                RESPUESTA:
+                """, context, question);
 
             ObjectNode requestBody = objectMapper.createObjectNode();
             requestBody.put("model", chatModel);

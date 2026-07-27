@@ -22,15 +22,15 @@
     </div>
   }
 
-  @if (mensaje) {
-    <div class="mensaje">{{ mensaje }}</div>
+  @if (mensaje()) {
+    <div class="mensaje">{{ mensaje() }}</div>
   }
 
   <button
     class="btn-subir"
-    [disabled]="!archivo || subiendo"
+    [disabled]="!archivo || subiendo()"
     (click)="subirArchivo()"
   >
-    {{ subiendo ? 'Subiendo...' : 'Subir PDF' }}
+    {{ subiendo() ? 'Subiendo...' : 'Subir PDF' }}
   </button>
 </div>

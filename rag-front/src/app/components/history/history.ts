@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { DocumentService } from '../../services/document/documentservice';
 
 
 interface Document {
-  id: number;
-  nombre: string;
-  fechaSubida: string;
-  tamanio: number;
+  idDocument: number;
+  name: string;
+  dateUploaded: string;
+  totalChunks: number;
 }
 
 @Component({
@@ -16,8 +16,8 @@ interface Document {
   styleUrl: './history.css',
 })
 export class History implements OnInit {
-  documentos: Document[] = [];
-  cargando = false;
+  documentos = signal<Document[]>([]);
+  cargando = signal<boolean>(false);
 
   constructor(private documentService: DocumentService) {}
 
@@ -26,14 +26,14 @@ export class History implements OnInit {
   }
 
   cargarDocumentos(): void {
-    this.cargando = true;
+    this.cargando.set(true);
     this.documentService.obtenerDocumentos().subscribe({
       next: (docs) => {
-        this.documentos = docs;
-        this.cargando = false;
+        this.documentos.set(docs);
+        this.cargando.set(false);
       },
       error: () => {
-        this.cargando = false;
+        this.cargando.set(false);
       }
     });
   }
@@ -41,7 +41,7 @@ export class History implements OnInit {
   eliminar(id: number): void {
     this.documentService.eliminarDocumento(id).subscribe({
       next: () => {
-        this.documentos = this.documentos.filter(doc => doc.id !== id);
+        this.documentos.update(currentDocs => currentDocs.filter(doc => doc.idDocument !== id));
       }
     });
   }

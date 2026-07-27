@@ -1,7 +1,7 @@
 <div class="history-container">
   <h2>Documentos subidos</h2>
 
-  @if (cargando) {
+  @if (cargando()) {
     <p class="estado">Cargando documentos...</p>
   }
 
@@ -9,15 +9,15 @@
     <p class="estado">No hay documentos subidos aún.</p>
   }
 
-  @for (doc of documentos; track doc.id) {
+  @for (doc of documentos(); track doc.idDocument) {
     <div class="documento-card">
       <div class="doc-info">
-        <span class="doc-nombre">📄 {{ doc.nombre }}</span>
+        <span class="doc-nombre">📄 {{ doc.name }}</span>
         <span class="doc-meta">
-          {{ doc.fechaSubida }} · {{ (doc.tamanio / 1024).toFixed(1) }} KB
+          {{ doc.dateUploaded }} · {{ (doc.totalChunks / 1024).toFixed(1) }} KB
         </span>
       </div>
-      <button class="btn-eliminar" (click)="eliminar(doc.id)">
+      <button class="btn-eliminar" (click)="eliminar(doc.idDocument)">
         Eliminar
       </button>
     </div>

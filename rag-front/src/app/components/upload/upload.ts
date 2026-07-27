@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, signal, ViewChild } from '@angular/core';
 import { Pdf } from '../../services/pdf-service/pdf';
 
 @Component({
@@ -9,8 +9,8 @@ import { Pdf } from '../../services/pdf-service/pdf';
 })
 export class Upload {
   archivo: File | null = null;
-  subiendo = false;
-  mensaje = '';
+  subiendo = signal<boolean>(false);
+  mensaje = signal<string>('');
 
   @ViewChild('inputArchivo')
   inputArchivo!: ElementRef<HTMLInputElement>;
@@ -30,16 +30,16 @@ export class Upload {
 
   subirArchivo(): void {
     if (!this.archivo) return;
-    this.subiendo = true;
+    this.subiendo.set(true);
     this.pdf.subirPdf(this.archivo).subscribe({
       next: () => {
-        this.mensaje = '✅ PDF subido correctamente';
+        this.mensaje.set('✅ PDF subido correctamente');
         this.archivo = null;
-        this.subiendo = false;
+        this.subiendo.set(false);
       },
       error: () => {
-        this.mensaje = '❌ Error al subir el PDF';
-        this.subiendo = false;
+        this.mensaje.set('❌ Error al subir el PDF');
+        this.subiendo.set(false);
       }
     });
   }

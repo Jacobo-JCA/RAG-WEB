@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 
 
 interface Document {
-  id: number;
-  nombre: string;
-  fechaSubida: string;
-  tamanio: number;
+  idDocument: number;
+  name: string;
+  dateUploaded: string;
+  totalChunks: number;
 }
 
 @Injectable({
